@@ -22,7 +22,7 @@ export function PiSignInButton() {
       await window.Pi.init({ version: '2.0' });
 
       // Récupérer l'authentification avec les scopes demandés
-      const auth = await window.Pi.authenticate(['username', 'wallet'], () => window.location.href = '/');
+      const auth = await window.Pi.authenticate(['username', 'payments'], () => window.location.href = '/');
 
       if (auth?.accessToken) {
         // Envoyer le token au backend
