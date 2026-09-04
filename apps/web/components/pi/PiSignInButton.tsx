@@ -41,7 +41,7 @@ export function PiSignInButton() {
           window.location.href = '/dashboard';
         } else {
           const data = await response.json();
-          setError(data.message || 'Login failed');
+          setError(data.error?.message || 'Login failed');
         }
       } else {
         setError('Failed to get access token from Pi');
