@@ -21,8 +21,8 @@ export function PiSignInButton() {
       // Initialiser Pi SDK
       await window.Pi.init({ version: '2.0' });
 
-      // Récupérer l'authentification
-      const auth = await window.Pi.authenticate();
+      // Récupérer l'authentification avec les scopes demandés
+      const auth = await window.Pi.authenticate(['username', 'wallet'], () => window.location.href = '/');
 
       if (auth?.accessToken) {
         // Envoyer le token au backend
