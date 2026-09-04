@@ -26,7 +26,7 @@ export function PiSignInButton() {
 
       if (auth?.accessToken) {
         // Envoyer le token au backend
-        const response = await fetch('/api/auth/pi-login', {
+        const response = await fetch('/api/v1/auth/pi-login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
