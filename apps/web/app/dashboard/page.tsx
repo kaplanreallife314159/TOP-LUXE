@@ -15,6 +15,10 @@ export default function DashboardPage() {
 
     try {
       await window.Pi.init({ version: '2.0' });
+await window.Pi.authenticate(
+  ['username', 'payments'],
+  () => {}
+);
 
       const payment = await window.Pi.createPayment(
         {
