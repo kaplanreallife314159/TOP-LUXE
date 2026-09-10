@@ -40,7 +40,7 @@ export default function DashboardPage() {
           ) => {
             setStatus('Finalisation du paiement...');
 
-            await fetch('/api/v1/payments/pi/complete', {
+            await fetch('/api/v1/payments/complete', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ paymentId, txid }),
