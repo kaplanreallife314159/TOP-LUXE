@@ -62,9 +62,14 @@ export default function DashboardPage() {
 
       console.log('Payment:', payment);
     } catch (error) {
-      console.error(error);
-      setStatus('Impossible de lancer le paiement.');
-    }
+  console.error('Erreur paiement TopLuxe:', error);
+
+  setStatus(
+    error instanceof Error
+      ? `Erreur Pi : ${error.message}`
+      : `Erreur Pi : ${String(error)}`
+  );
+}
   };
 
   return (
