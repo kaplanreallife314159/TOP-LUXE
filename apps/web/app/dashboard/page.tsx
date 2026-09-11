@@ -52,11 +52,21 @@ console.log('AUTH PI RÉUSSIE :', auth);
           ) => {
             setStatus('Finalisation du paiement...');
 
-            await fetch('/api/v1/payments/complete', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ paymentId, txid }),
-            });
+           const response = await fetch('/api/v1/payments/pi/approve', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ paymentId }),
+});
+
+const data = await response.json().catch(() => null);
+
+console.log('APPROVAL RESPONSE :', response.status, data);
+
+if (!response.ok) {
+  throw new Error(
+    `Approbation échouée (${response.status}) : ${data?.error || 'Erreur inconnue'}`
+  );
+}
 
             setStatus('Paiement terminé.');
           },
