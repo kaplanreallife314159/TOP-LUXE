@@ -14,7 +14,10 @@ export default function DashboardPage() {
     }
 
     try {
-      await window.Pi.init({ version: '2.0' });
+      await window.Pi.init({
+        version: '2.0',
+        sandbox: process.env.NEXT_PUBLIC_PI_SANDBOX === 'true',
+      });
 const auth = await window.Pi.authenticate(
   ['username', 'payments'],
   (payment) => {
