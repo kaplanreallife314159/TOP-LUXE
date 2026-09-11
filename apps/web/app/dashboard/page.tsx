@@ -37,14 +37,50 @@ console.log('AUTH PI RÉUSSIE :', auth);
           },
         },
         {
-          onReadyForServerApproval: async (paymentId: string) => {
-            setStatus('Paiement en attente d’approbation...');
-            await fetch('/api/v1/payments/pi/approve', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ paymentId }),
-            });
-          },
+         onReadyForServerApproval: async (paymentId: string) => {
+  setStatus(`Approbation du paiement ${paymentId}...`);
+
+  try {
+    console.log('➡️ ENVOI APPROBATION :', paymentId);
+
+    const response = await fetch('/api/v1/payments/pi/approve', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ paymentId }),
+    });
+
+    const data = await response.json().catch(() => null);
+
+    console.log(
+      '⬅️ RÉPONSE APPROBATION :',
+      response.status,
+      data
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Approbation échouée (${response.status}) : ${
+          data?.error || 'Erreur inconnue'
+        }`
+      );
+    }
+
+    setStatus('Paiement approuvé par le serveur. Attente de confirmation Pi...');
+
+  } catch (error) {
+    console.error('❌ ERREUR APPROBATION :', error);
+
+    setStatus(
+      error instanceof Error
+        ? `Erreur approbation : ${error.message}`
+        : `Erreur approbation : ${String(error)}`
+    );
+
+    throw error;
+  }
+},
 
           onReadyForServerCompletion: async (
             paymentId: string,
