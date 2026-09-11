@@ -88,23 +88,37 @@ console.log('AUTH PI RÉUSSIE :', auth);
           ) => {
             setStatus('Finalisation du paiement...');
 
-           const response = await fetch('/api/v1/payments/pi/approve', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ paymentId }),
-});
+            try {
+              console.log('➡️ ENVOI COMPLETION :', paymentId, txid);
 
-const data = await response.json().catch(() => null);
+              const response = await fetch('/api/v1/payments/complete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ paymentId, txid }),
+              });
 
-console.log('APPROVAL RESPONSE :', response.status, data);
+              const data = await response.json().catch(() => null);
 
-if (!response.ok) {
-  throw new Error(
-    `Approbation échouée (${response.status}) : ${data?.error || 'Erreur inconnue'}`
-  );
-}
+              console.log('⬅️ RÉPONSE COMPLETION :', response.status, data);
 
-            setStatus('Paiement terminé.');
+              if (!response.ok) {
+                throw new Error(
+                  `Complétion échouée (${response.status}) : ${data?.error || 'Erreur inconnue'}`
+                );
+              }
+
+              setStatus('Paiement terminé.');
+            } catch (error) {
+              console.error('❌ ERREUR COMPLETION :', error);
+
+              setStatus(
+                error instanceof Error
+                  ? `Erreur complétion : ${error.message}`
+                  : `Erreur complétion : ${String(error)}`
+              );
+
+              throw error;
+            }
           },
 
           onCancel: () => {
