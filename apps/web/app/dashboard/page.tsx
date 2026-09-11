@@ -15,10 +15,18 @@ export default function DashboardPage() {
 
     try {
       await window.Pi.init({ version: '2.0' });
-await window.Pi.authenticate(
+const auth = await window.Pi.authenticate(
   ['username', 'payments'],
-  () => {}
+  (payment) => {
+    console.log('PAIEMENT INCOMPLET DÉTECTÉ :', payment);
+
+    setStatus(
+      `Paiement incomplet détecté : ${payment?.identifier || 'identifiant inconnu'}`
+    );
+  }
 );
+
+console.log('AUTH PI RÉUSSIE :', auth);
 
       const payment = await window.Pi.createPayment(
         {
