@@ -18,7 +18,7 @@ export default function DashboardPage() {
 const auth = await window.Pi.authenticate(
   ['username', 'payments'],
   (payment) => {
-    console.log('PAIEMENT INCOMPLET DÉTECTÉ :', payment);
+    console.warn('PAIEMENT INCOMPLET DÉTECTÉ :', payment);
 
     setStatus(
       `Paiement incomplet détecté : ${payment?.identifier || 'identifiant inconnu'}`
